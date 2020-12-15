@@ -1,3 +1,4 @@
+<?php
 public static function getWeffOmega($h, $b, $r, $s, $eps) {
         $rm = 1.5*$s;
         $gr = $rm * (1- sqrt(2)/2);
