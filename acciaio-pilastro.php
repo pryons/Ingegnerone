@@ -45,7 +45,7 @@
             'MyB' => '',
         ];
     }
-
+    
     public static function prepareDataForSave($data)
     {
         return [
@@ -93,18 +93,18 @@
             'MyB' => $data["MyB"],
         ];
     }
-
+    
     public static function prepareDataForRender($project)
     {
         $data = unserialize($project[0]->data);
-    
+        
         $NTC=$data['NTC'];
         
         $tipoprofilato = substr($data["tipoprof"], 0, 2);
         switch ($tipoprofilato) {
             case 'IP':
             case 'HE':
-                $AreaVy = $data["Atot"]-(2*$data["b_prof"]/10*$data["e_prof"]/10)+($data["s_prof"]/10+2*$data["r_prof"]/10)*$data["e_prof"]/10;
+                $AreaVy = $data["Atot"]-((2*$data["b_prof"]/10)*$data["e_prof"]/10)+(($data["s_prof"]/10+2*$data["r_prof"]/10)*$data["e_prof"]/10);
                 $AreaVx = $data["Atot"]-(($data["h_prof"]-(2*$data["e_prof"])-(2*$data["r_prof"]))/10*($data["s_prof"])/10);
                 $AreaWx = ($data["h_prof"]-(2*$data["e_prof"])-(2*$data["r_prof"]))*$data["s_prof"]/100;
                 $AreaWy = 2*$data["b_prof"]*$data["e_prof"]/100;
@@ -129,10 +129,10 @@
                 break;
             case 'PR':
             case 'PQ':
-                $AreaVy = $data["Atot"]*$data["h_prof"]/10/($data["b_prof"]/10*$data["h_prof"]/10);
-                $AreaWy = $data["Atot"]*$data["h_prof"]/10/($data["b_prof"]/10*$data["h_prof"]/10);
-                $AreaVx = $data["Atot"]*$data["b_prof"]/10/($data["b_prof"]/10*$data["h_prof"]/10);
-                $AreaWx = $data["Atot"]*$data["b_prof"]/10/($data["b_prof"]/10*$data["h_prof"]/10);
+                $AreaVy = $data["Atot"]*$data["h_prof"]/10/($data["b_prof"]/10+$data["h_prof"]/10);
+                $AreaWy = $data["Atot"]*$data["h_prof"]/10/($data["b_prof"]/10+$data["h_prof"]/10);
+                $AreaVx = $data["Atot"]*$data["b_prof"]/10/($data["b_prof"]/10+$data["h_prof"]/10);
+                $AreaWx = $data["Atot"]*$data["b_prof"]/10/($data["b_prof"]/10+$data["h_prof"]/10);
                 $C1 = ($data["h_prof"] - (4 * $data["s_prof"]) );
                 $T1 = $data["s_prof"];
                 $C2 = ($data["b_prof"] - (4 * $data["s_prof"]) );
@@ -142,10 +142,10 @@
                 break;
             case 'TR':
             case 'TQ':
-                $AreaVy = $data["Atot"]*$data["h_prof"]/10/($data["b_prof"]/10*$data["h_prof"]/10);
-                $AreaWy = $data["Atot"]*$data["h_prof"]/10/($data["b_prof"]/10*$data["h_prof"]/10);
-                $AreaVx = $data["Atot"]*$data["b_prof"]/10/($data["b_prof"]/10*$data["h_prof"]/10);
-                $AreaWx = $data["Atot"]*$data["b_prof"]/10/($data["b_prof"]/10*$data["h_prof"]/10);
+                $AreaVy = $data["Atot"]*$data["h_prof"]/10/($data["b_prof"]/10+$data["h_prof"]/10);
+                $AreaWy = $data["Atot"]*$data["h_prof"]/10/($data["b_prof"]/10+$data["h_prof"]/10);
+                $AreaVx = $data["Atot"]*$data["b_prof"]/10/($data["b_prof"]/10+$data["h_prof"]/10);
+                $AreaWx = $data["Atot"]*$data["b_prof"]/10/($data["b_prof"]/10+$data["h_prof"]/10);
                 $C1 = ($data["h_prof"] - (4 * $data["s_prof"]) + (3/2*$data["s_prof"]*sqrt(2)/2) );
                 $T1 = $data["s_prof"];
                 $C2 = ($data["b_prof"] - (4 * $data["s_prof"]) + (3/2*$data["s_prof"]*sqrt(2)/2) );
@@ -194,8 +194,7 @@
                 $AreaVx = ($data["b_prof"])*$data["s_prof"]/100;
                 $AreaWx = ($data["b_prof"])*$data["s_prof"]/100;
                 break;
-        }
-        
+        }     
         $eps = sqrt ( 235 / $data['fyk'] );
         //flessione intorno a x
         $psiClasse = (( $data["Ned"] / $data["Atot"] )-( $data['Msdx'] / $data['wx'] )) / (( $data["Ned"] / $data["Atot"] ) + ( $data['Msdx'] / $data['wx'] ));
@@ -259,7 +258,7 @@
             }
             $classesez = max ( $classesez1, $classesez2 );
         }elseif (($tipoprofilato == 'TR')OR($tipoprofilato == 'TQ') OR ($tipoprofilato == 'PQ') OR ($tipoprofilato == 'PR')) {       //tubolari rettangolari o quadrati a freddo o caldo
-            if ( $verCL1 <= ($limiteCL1) ) {  
+            if ( $verCL1 <= ($limiteCL1) ) {
                 $classesez1 = '1';
             }elseif ( $verCL1 <= ($limiteCL2) ) {
                 $classesez1 = '2';
@@ -267,7 +266,7 @@
                 $classesez1 = '3';
             }else{
                 $classesez1 = '4';
-            }            
+            }
             if ( $verCL2 <= ($limiteCL1x) ) {
                 $classesez2 = '1';
             }elseif ( $verCL2 <= ($limiteCL2x) ) {
@@ -309,7 +308,7 @@
                 $classesez1 = '3';
             }else{
                 $classesez1 = '4';
-            }            
+            }
             if ( $verCL2 <= (9 * $eps ) ) {
                 $classesez2 = '1';
             }elseif ( $verCL2 <= (10 * $eps ) ) {
@@ -320,7 +319,7 @@
                 $classesez2 = '4';
             }
             $classesez = max ( $classesez1, $classesez2 );
-        }    
+        }
         
         $Vrdx = $AreaVx*($data['fyk']/10)/(sqrt(3)*$data['gammaM']);
         $Vrdy = $AreaVy*($data['fyk']/10)/(sqrt(3)*$data['gammaM']);
@@ -415,11 +414,13 @@
         $maggminVx = '<';
         $classVx = 'success';
         $risVx = '';
+        $risVx0 = '<b><i class="fa fa-check-circle"></i></b>';
         $verTagx = ($data['Vsdx']/$Vrdx);
         if ($verTagx > 1){
             $maggminVx = '>';
             $classVx = 'danger';
             $risVx = 'NON';
+            $risVx0 = '<b><i class="fa fa-times-circle"></i></b>';
         }
         if ($data['Vsdx']<(0.5*$Vrdx)){
             $interazioneVx = "Il taglio sollecitante &egrave; minore di 0.5*Vrd, quindi si trascura l'influenza del taglio sulla resistenza a flessione";
@@ -429,11 +430,13 @@
         $maggminVy = '<';
         $classVy = 'success';
         $risVy = '';
+        $risVy0 = '<b><i class="fa fa-check-circle"></i></b>';
         $verTagy = ($data['Vsdy']/$Vrdy);
         if ($verTagy > 1){
             $maggminVy = '>';
             $classVy = 'danger';
             $risVy = 'NON';
+            $risVy0 = '<b><i class="fa fa-times-circle"></i></b>';
         }
         if ($data['Vsdy']<(0.5*$Vrdy)){
             $interazioneVy = "Il taglio sollecitante &egrave; minore di 0.5*Vrd, quindi si trascura l'influenza del taglio sulla resistenza a flessione";
@@ -444,45 +447,35 @@
         //verifica pressoflessione
         $caricoCRx=round((pow(pi(),2)*$data['E']/10*$data["jx"]/(pow(100*$data["lunghezza"],2))),3);
         $caricoCRy=round((pow(pi(),2)*$data['E']/10*$data["jy"]/(pow(100*$data["lunghezza"],2))),3);
-        $lambdax=round((sqrt($data["Atot"]*$data['fyk']/10/$caricoCRx)),3);
-        $lambday=round((sqrt($data["Atot"]*$data['fyk']/10/$caricoCRy)),3);
+        $lambdax=round((sqrt($Aclasse*$data['fyk']/10/$caricoCRx)),3);
+        $lambday=round((sqrt($Aclasse*$data['fyk']/10/$caricoCRy)),3);
         $fix=0.5*(1+($data["alfax"]*($lambdax-0.2))+($lambdax*$lambdax));
         $fiy=0.5*(1+($data["alfay"]*($lambday-0.2))+($lambday*$lambday));
-        $chix=1/($fix+(sqrt(($fix*$fix)-($lambdax*$lambdax))));
-        $chiy=1/($fiy+(sqrt(($fiy*$fiy)-($lambday*$lambday))));
-        if ($chix<1) {
-            $chix;
-        }else {
-            $chix=1;
-        }
-        if ($chiy<1) {
-            $chiy;
-        }else {
-            $chiy=1;
-        }
+        $chix=min(1,(1/($fix+(sqrt(($fix*$fix)-($lambdax*$lambdax))))));
+        $chiy=min(1,(1/($fiy+(sqrt(($fiy*$fiy)-($lambday*$lambday))))));
         $chimin=min($chix,$chiy);
-        $nMN = $data["Ned"]/$Nrd;        
+        $nMN = $data["Ned"]/$Nrd;
         if (($tipoprofilato == 'IP')OR($tipoprofilato == 'HE')){
             $alfaEXP = 2;
             $betaEXP = min(1,5*$nMN);
             if ($data["h_prof"]/$data["b_prof"] > 2) $curva = 'c';
             else $curva = 'b';
-            $datajy = $data['jy']; 
-            $datajt = $data['jt']; 
-            $datajw = $data['jw'];   
+            $datajy = $data['jy'];
+            $datajt = $data['jt'];
+            $datajw = $data['jw'];
             $aMN = min( ($data["Atot"]-2*$data["b_prof"]/10*$data["e_prof"]/10)/$data["Atot"], 0.5);
             $Mnrdx = min( $Mrdx*((1-$nMN)/(1-(0.5*$aMN))), $Mrdx);
             if ( $nMN <= $aMN ){
                 $Mnrdy = $Mrdy;
             }else{
                 $Mnrdy = $Mrdy*(1-pow(($nMN-$aMN)/(1-$aMN),2));
-            }            
+            }
         }elseif(($tipoprofilato == 'TT')OR($tipoprofilato == 'PC')){
             $alfaEXP = 2;
             $betaEXP = 2;
             $curva = 'd';
-            $datajy = $data['jy']; 
-            $datajt = pi()*( pow($data['b_prof'],4)-pow(($data['b_prof']-2*$data['s_prof']),4) )/32; 
+            $datajy = $data['jy'];
+            $datajt = (pi()*( pow($data['b_prof'],4)-pow(($data['b_prof']-2*$data['s_prof']),4) )/32)/10000;
             $datajw = 0;
             $Mnrdx = $Mrdx*(1-pow($nMN,1.7));
             $Mnrdy = $Mnrdx;
@@ -490,51 +483,33 @@
             $alfaEXP = min((1.66/(1-(1.13*pow($nMN,2)))),6);
             $betaEXP = $alfaEXP;
             $curva = 'd';
-            $datajy = $data['jy']; 
-            $datajt = 4*pow( ($data['b_prof']-$data['s_prof'])*($data['h_prof']-$data['s_prof']) ,2)*$data['s_prof'] / ( 2*($data['b_prof']-$data['s_prof'])+2*($data['h_prof']-$data['s_prof'])); 
+            $datajy = $data['jy'];
+            $datajt = (4*pow( ($data['b_prof']-$data['s_prof'])*($data['h_prof']-$data['s_prof']) ,2)*$data['s_prof'] / ( 2*($data['b_prof']-$data['s_prof'])+2*($data['h_prof']-$data['s_prof'])))/10000;
             $datajw = 0;
             $aMNs = ($data["Atot"]-2*$data["b_prof"]/10*$data["s_prof"]/10)/$data["Atot"];
             $aMNe = ($data["Atot"]-2*$data["h_prof"]/10*$data["s_prof"]/10)/$data["Atot"];
-            $Mnrdx = ($Mrdx*(1-$nMN)/(1-0.5*$axMNs));
-            $Mnrdy = ($Mrdx*(1-$nMN)/(1-0.5*$axMNe));
+            $Mnrdx = min($Mrdx,($Mrdx*(1-$nMN)/(1-0.5*$aMNs)));
+            $Mnrdy = min($Mrdy,($Mrdy*(1-$nMN)/(1-0.5*$aMNe)));
         }elseif($tipoprofilato == 'UP'){          // PROFILATO UPN - nessun riferimento normativo - ipotesi da formulare
             $curva = 'c';
             $datajy = $data['jy'];
             $datajt = $data['jt'];
-            $datajw = $data['jw']; 
+            $datajw = $data['jw'];
             $Mnrdy = $Mrdy;
             $Mnrdx = $Mrdx;
-        }
-        
+        }        
         $alfa = array(
             'a' => 0.21,
             'b' => 0.34,
             'c' => 0.49,
             'd' => 0.76,
-        );        
-        $G = $data['E'] / (2*(1+0.3));
-        $alfaLT = $alfa[$curva];
-        $rigFly = $data['E']*($datajy*10000)/1000000000; //in KNm^2
-        $rigTor = $G*($datajt*10000)/1000000000; //in KNm^2
-        $rigSec = $data['E']*($datajw*1000)/1000000000000000; // in KNm^4
-        $psi = 1;
-        $momcritico = $psi*(pi()/($data['lunghezza']))*(sqrt($rigFly*$rigTor))*(sqrt(1+pow((pi()/($data['lunghezza'])),2)*($rigSec/$rigTor)));
-        $lambdaLT = sqrt(($wxclasse/ 1000000)*$data['fyk']*1000/$momcritico);
-        $lambdaLT0 = 0.2;
-        $kc = 1;
-        $f = 1 - 0.5*(1-$kc)*(1-2*(pow(($lambdaLT-0.8),2)));
-        $beta = 1;
-        $kappachi = min(1,(1/($f*pow($lambdaLT,2))));
-        $psiLT = 0.5*(1+$alfaLT*($lambdaLT-$lambdaLT0)+$beta*pow($lambdaLT,2));
-        $chiLT = (1/$f)*(1 / ($psiLT+sqrt(pow($psiLT,2)-($beta*pow($lambdaLT,2)))));
-        $chiLT = min ($chiLT,$kappachi);
-        //per classe 4
+        );  
         if ( abs($data['MxA']) >= abs($data['MxB']) ){
             $Mxmag = $data['MxA'];
             $Mxmin = $data['MxB'];
         }else{
             $Mxmag = $data['MxB'];
-            $Mxmin = $data['MxA'];            
+            $Mxmin = $data['MxA'];
         }
         if ( abs($data['MyA']) >= abs($data['MyB']) ){
             $Mymag = $data['MyA'];
@@ -542,12 +517,50 @@
         }else{
             $Mymag = $data['MyB'];
             $Mymin = $data['MyA'];
-        }
-        $psiX = $Mxmin/$Mxmag;
-        $psiY = $Mymin/$Mymag;
+        }  
+        $psiX = ($Mxmag != 0) ? $Mxmin/$Mxmag : 1;
+        $psiY = ($Mymag != 0) ? $Mymin/$Mymag : 1;
         $alfaMX = max(0.6+0.4*$psiX,0.4*$psiX);
         $alfaMY = max(0.6+0.4*$psiY,0.4*$psiY);
         $alfaMLT = $alfaMY;
+        $G = $data['E'] / (2*(1+0.3));
+        $alfaLT = $alfa[$curva];
+        $rigFly = $data['E']*($datajy*10000)/1000000000; //in KNm^2
+        $rigTor = $G*($datajt*10000)/1000000000; //in KNm^2
+        $rigSec = $data['E']*($datajw*1000)/1000000000000000; // in KNm^4
+        if (($tipoprofilato == 'IP')OR($tipoprofilato == 'HE')){
+            $psi = 1.75-1.05*($Mxmin/$Mxmag)+0.3*pow(($Mxmin/$Mxmag),2);
+            $momcritico = $psi*(pi()/($data['lunghezza']))*(sqrt($rigFly*$rigTor))*(sqrt(1+pow((pi()/($data['lunghezza'])),2)*($rigSec/$rigTor)));
+        }else{
+            if ( $psiX <= 1 AND $psiX >= 0.75){
+                $CiUno = 1.14+((($psiX - 0.75)/0.25)*(1-1.14));
+            }elseif ( $psiX < 0.75 AND $psiX >= 0.50){
+                $CiUno = 1.31+((($psiX - 0.5)/0.25)*(1.14-1.31));
+            }elseif ( $psiX < 0.50 AND $psiX >= 0.25){
+                $CiUno = 1.52+((($psiX - 0.25)/0.25)*(1.31-1.52));
+            }elseif ( $psiX < 0.25 AND $psiX >= 0){
+                $CiUno = 1.77+((($psiX - 0)/0.25)*(1.52-1.77));
+            }elseif ( $psiX < 0 AND $psiX >= -0.25){
+                $CiUno = 2.05+((($psiX + 0.25)/0.25)*(1.77-2.05));
+            }elseif ( $psiX < -0.25 AND $psiX >= -0.5){
+                $CiUno = 2.33+((($psiX + 0.5)/0.25)*(2.05-2.33));
+            }elseif ( $psiX < -0.5 AND $psiX >= -0.75){
+                $CiUno = 2.57+((($psiX + 0.75)/0.25)*(2.33-2.57));
+            }elseif ( $psiX < -0.75 AND $psiX >= -1){
+                $CiUno = 2.55+((($psiX + 1)/0.25)*(2.57-2.55));
+            }
+            $momcritico = $CiUno*(pow(pi(),2)*$rigFly)/(pow($data['lunghezza'],2))*(sqrt((($datajw/$datajy)/10000)+(pow($data['lunghezza'],2)*$rigTor/(pow(pi(),2)*$rigFly))));
+        }
+        $lambdaLT = sqrt(($wxclasse/ 1000000)*$data['fyk']*1000/$momcritico);
+        $lambdaLT0 = 0.2;
+        $kc = 1/(1.33-0.33*$psiX);
+        $f = 1 - 0.5*(1-$kc)*(1-2*(pow(($lambdaLT-0.8),2)));
+        $beta = 1;
+        $kappachi = min(1,(1/($f*pow($lambdaLT,2))));
+        $psiLT = 0.5*(1+$alfaLT*($lambdaLT-$lambdaLT0)+$beta*pow($lambdaLT,2));
+        $chiLT = (1/$f)*(1 / ($psiLT+sqrt(pow($psiLT,2)-($beta*pow($lambdaLT,2)))));
+        $chiLT = min ($chiLT,$kappachi);
+        
         if ($classesez == 4){
             $kXX = min( $alfaMX*(1+(0.6*$lambdax*$data['Ned']*$data['gammaM']/($chix*$Aclasse*$data['fyk']))),$alfaMX*(1+(0.6*$data['Ned']*$data['gammaM']/($chix*$Aclasse*$data['fyk']))) );
             $kYY = min( $alfaMY*(1+(0.6*$lambday*$data['Ned']*$data['gammaM']/($chiy*$Aclasse*$data['fyk']))),$alfaMY*(1+(0.6*$data['Ned']*$data['gammaM']/($chiy*$Aclasse*$data['fyk']))) );
@@ -558,32 +571,44 @@
                 $kYX = max( 1-((0.05*$lambday/($alfaMLT-0.25))*($data['Ned']*$data['gammaM']/($chiy*$Aclasse*$data['fyk']))),1-((0.05/($alfaMLT-0.25))*($data['Ned']*$data['gammaM']/($chiy*$Aclasse*$data['fyk']))) );
             }
         }
+        
         //verifica resistenza
         $maggminR = '<';
         $classR = 'success';
         $risR = '';
+        $risR0 = '<b><i class="fa fa-check-circle"></i></b>';
         if ( $classesez < 3 ){
             if ( ($tipoprofilato != 'UP')AND($nMN >= 0.2) ){
+                $verResImg = 'images/verres1.jpg';
                 $verRes = pow(($data['Msdx']/$Mnrdx),$alfaEXP)+pow(($data['Msdy']/$Mnrdy),$betaEXP);
             }else{
+                $verResImg = 'images/verres.jpg';
                 $verRes = ($data['Msdx']/$Mnrdx)+($data['Msdy']/$Mnrdy);
             }
         }elseif ( $classesez == 3 ){
+            $verResImg = 'images/verres3.jpg';
             $verRes = ($data["Ned"]/$Nrd)+($data['Msdx']/$Mrdx)+($data['Msdy']/$Mrdy);
         }elseif ( $classesez = 4 ){
+            $verResImg = 'images/verres4.jpg';
             $verRes = ($data["Ned"]/$Nrd)+(($data['Msdx']+($data["Ned"]*$eY))/$Mrdx)+(($data['Msdy']+($data["Ned"]*$eX))/$Mrdy);
         }
         if ($verRes > 1){
             $maggminR = '>';
             $classR = 'danger';
             $risR = 'NON';
+            $risR0 = '<b><i class="fa fa-times-circle"></i></b>';
         }
         //verifica stabilita
         $maggminS = '<';
         $classS = 'success';
+        $maggminS1 = '<';
+        $classS1 = 'success';
+        $maggminS2 = '<';
+        $classS2 = 'success';
         $risS = '';
         $risS0 = '<b><i class="fa fa-check-circle"></i></b>';
         if ( $classesez < 4 ){
+            $verStabImg = 'images/verstab.jpg';
             $verStab = ($data["Ned"]*$data['gammaM']/($chimin*$Aclasse*$data['fyk']/10))+($data["Meqx"]*100*$data['gammaM']/($chiLT*$data['fyk']/10*$wxclasse*(1-($data["Ned"]/$caricoCRx))))+($data["Meqy"]*100*$data['gammaM']/($data['fyk']/10*$wyclasse*(1-($data["Ned"]/$caricoCRy))));
             if ($verStab > 1){
                 $maggminS = '>';
@@ -592,21 +617,30 @@
                 $risS0 = '<b><i class="fa fa-times-circle"></i></b>';
             }
         }else{
+            $verStabImg = 'images/verstab1.jpg';
             $verStab1 = ($data["Ned"]*$data['gammaM']/($chix*$Aclasse*$data['fyk']/10))+$kXX*(($data['Msdx']+($data["Ned"]*$eY))*100*$data['gammaM']/($chiLT*$data['fyk']/10*$wxclasse))+$kXY*(($data['Msdy']+($data["Ned"]*$eX))*100*$data['gammaM']/($data['fyk']/10*$wyclasse));
-            $verStab2 = ($data["Ned"]*$data['gammaM']/($chiy*$Aclasse*$data['fyk']/10))+$kYX*(($data['Msdx']+($data["Ned"]*$eY))*100*$data['gammaM']/($chiLT*$data['fyk']/10*$wxclasse))+$kYY*(($data['Msdy']+($data["Ned"]*$eX))*100*$data['gammaM']/($data['fyk']/10*$wyclasse)); 
+            $verStab2 = ($data["Ned"]*$data['gammaM']/($chiy*$Aclasse*$data['fyk']/10))+$kYX*(($data['Msdx']+($data["Ned"]*$eY))*100*$data['gammaM']/($chiLT*$data['fyk']/10*$wxclasse))+$kYY*(($data['Msdy']+($data["Ned"]*$eX))*100*$data['gammaM']/($data['fyk']/10*$wyclasse));
             if ( ($verStab1 > 1) OR ($verStab2 > 1) ){
-                $maggminS = '>';
                 $classS = 'danger';
                 $risS = 'NON';
                 $risS0 = '<b><i class="fa fa-times-circle"></i></b>';
             }
-        }
+            if ( ($verStab1 > 1) ){
+                $maggminS1 = '>';
+                $classS1 = 'danger';
+            }
+            if ( ($verStab2 > 1) ){
+                $maggminS2 = '>';
+                $classS2 = 'danger';
+            }
+        } 
         
-        $data['wxclasse'] = round($wxclasse, 0);
-        $data['wyclasse'] = round($wyclasse, 0);
-        $data['jxclasse'] = round($jxclasse, 0);
-        $data['jyclasse'] = round($jyclasse, 0);
-        $data['Aclasse'] = round($Aclasse, 0);
+        
+        $data['wxclasse'] = round($wxclasse, 2);
+        $data['wyclasse'] = round($wyclasse, 2);
+        $data['jxclasse'] = round($jxclasse, 2);
+        $data['jyclasse'] = round($jyclasse, 2);
+        $data['Aclasse'] = round($Aclasse, 2);
         $data['NTC'] = $NTC;
         $data['classesez'] = $classesez;
         $data['Nrd'] = round($Nrd, 3);
@@ -621,22 +655,34 @@
         $data['classVx'] = $classVx;
         $data['maggminVx'] = $maggminVx;
         $data['risVx'] = $risVx;
+        $data['risVx0'] = $risVx0;
         $data['interazioneVx'] = $interazioneVx;
         $data['classVy'] = $classVy;
         $data['maggminVy'] = $maggminVy;
         $data['risVy'] = $risVy;
+        $data['risVy0'] = $risVy0;
         $data['interazioneVy'] = $interazioneVy;
         $data['classR'] = $classR;
         $data['maggminR'] = $maggminR;
         $data['risR'] = $risR;
+        $data['risR0'] = $risR0;
         $data['verTagx'] = $verTagx;
         $data['verTagy'] = $verTagy;
         $data['verRes'] = $verRes;
+        $data['verResImg'] = $verResImg;
         $data['verStab'] = $verStab;
+        $data['verStab1'] = $verStab1;
+        $data['verStab2'] = $verStab2;
+        $data['verStabImg'] = $verStabImg;
+        $data['classS1'] = $classS1;
+        $data['maggminS1'] = $maggminS1;
+        $data['classS2'] = $classS2;
+        $data['maggminS2'] = $maggminS2;
         $data['classS'] = $classS;
         $data['maggminS'] = $maggminS;
         $data['risS'] = $risS;
-
+        $data['risS0'] = $risS0;
+        
         return $data;
     }
 ?>
